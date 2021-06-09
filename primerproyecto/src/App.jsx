@@ -1,12 +1,16 @@
 import React from 'react';
 import './App.css';
-import Hola from './components/Hola'
+import Contador from './components/Contador';
 
 function App() {
   return (
     <div className="App">
       <h1>Titulo de nuestro primer proyecto</h1>
-      <Hola></Hola>
+      {/* Cada componente contador es aparte no estan conectados entre si y el numero son todos distintos */}
+      <Contador></Contador>
+      <Contador></Contador>
+      <Contador></Contador>
+      <Contador></Contador>
     </div>
   );
 }
