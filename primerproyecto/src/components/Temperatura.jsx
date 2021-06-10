@@ -16,7 +16,7 @@ function Temperatura(){
 
 
     return(
-       <di className="container">
+       <div className="container">
            <h2>La temperatura es: {temepratura}</h2>
            <p>
                {
@@ -25,7 +25,7 @@ function Temperatura(){
            </p>
            <button className="btn btn-success btn-block" onClick={Subir}>Aumentar Temperatura</button>
            <button className="btn btn-danger btn-block"onClick={Bajar}>Reducir Temperatura</button>
-       </di>
+       </div>
     )
 }
 
