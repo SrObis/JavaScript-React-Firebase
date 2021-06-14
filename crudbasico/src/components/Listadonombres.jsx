@@ -6,14 +6,20 @@ const Listadonombres = () =>{
     const [listanombres, setListaNombres]= useState([])
     const [modoEdicion,setModoEdicion] = useState(false)
     const [id, setId] = useState('')
+    const [error, setError] = useState(null)
     const addNombre = (e)=>{
         e.preventDefault()
+        if(!nombre.trim()){
+            setError('El campo nombre esta vacio')
+            return
+        }
         const nuevoNombre= {
             id:uniqid(),
             tituloNombre:nombre
         }
         setListaNombres([...listanombres,nuevoNombre])
         setNombre('')
+        setError(null)
     }
     const deleteNombre = (id) =>{
         const nuevaArray = listanombres.filter(item => item.id !==id)
@@ -26,9 +32,17 @@ const Listadonombres = () =>{
     }
     const editarNombre = (e) =>{
         e.preventDefault()
+        if(!nombre.trim()){
+            setError('El campo nombre esta vacio')
+            return
+        }
         const NuevoArray = listanombres
         .map( item => item.id === id ? {id:id,tituloNombre:nombre} : item)
         setListaNombres(NuevoArray)
+        setModoEdicion(false)
+        setNombre('')
+        setError(null)
+
     }
     return(
         <div>
@@ -70,6 +84,18 @@ const Listadonombres = () =>{
                             placeholder="Registrar Nombre"/>
 
                     </form>
+                    {
+                        error != null ? (
+                            <div className="alert alert-danger">
+                                {error}
+                            </div>  
+                        ):
+                        (
+                            <div>
+                            </div> 
+                        )
+                    }
+                   
                 </div>
 
             </div>
