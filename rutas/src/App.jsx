@@ -12,6 +12,8 @@ import {
 function App() {
   return (
     <Router>
+      <Link to="/inicio">Inicio</Link>
+      <Link to="/">Base</Link>
 
     <Switch>
       <Route exact path="/inicio">
