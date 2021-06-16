@@ -1,4 +1,7 @@
 import React from 'react';
+import Inicio from './components/Inicio';
+import Base from './components/Base';
+import Error from './components/Error';
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,11 +14,14 @@ function App() {
     <Router>
 
     <Switch>
-      <Route path="/inicio">
-        Estas en el Inicio
+      <Route exact path="/inicio">
+        <Inicio/>
+      </Route>
+      <Route exact path="/">
+        <Base/>
       </Route>
       <Route path="/">
-        Esta es la URL base
+        <Error/>
       </Route>
     </Switch>
 
