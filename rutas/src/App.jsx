@@ -16,7 +16,7 @@ function App() {
       <Link to="/">Base</Link>
 
     <Switch>
-      <Route exact path="/inicio">
+      <Route exact path="/inicio/:id/:nombre/:edad">{/*al poner los dos puntos nombre pasa a ser dinamico*/}
         <Inicio/>
       </Route>
       <Route exact path="/">
