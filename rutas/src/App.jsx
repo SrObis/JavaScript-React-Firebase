@@ -1,7 +1,7 @@
 import React from 'react';
-import Inicio from './components/Inicio';
-import Base from './components/Base';
 import Error from './components/Error';
+import Usuarios from './components/Usuarios';
+import Usuario from './components/Usuario';
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,22 +12,22 @@ import {
 function App() {
   return (
     <Router>
-      <Link to="/inicio">Inicio</Link>
-      <Link to="/">Base</Link>
+      <Link to="/">Usuarios</Link>
 
-    <Switch>
-      <Route exact path="/inicio/:id/:nombre/:edad">{/*al poner los dos puntos nombre pasa a ser dinamico*/}
-        <Inicio/>
-      </Route>
+      <Switch>
       <Route exact path="/">
-        <Base/>
+        <Usuarios/>
+      </Route>
+      <Route path="/usuario/:id">
+        <Usuario/>
       </Route>
       <Route path="/">
         <Error/>
       </Route>
     </Switch>
-
     </Router>
+
+  
   );
 }
 
