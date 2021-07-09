@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import 'firebase/auth' 
-
+//servicio de autentificacion copiado de firebase
+//cada proyecto tiene su propio
 const firebaseConfig = {
     apiKey: "AIzaSyDAk2DnksbTXwec9HmM6avgasP6aTBvlzc",
     authDomain: "javascript-react-firebase.firebaseapp.com",
