@@ -5,14 +5,24 @@ import { auth } from '../firebaseconfig'
 const Login = () =>{
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [msgerror, setMesgerror] = useState(null)
     const RegistrarUsuario = (e)=>{
         e.preventDefault()//para que no se recarge el formulario
-        try{
-            auth.createUserWithEmailAndPassword(email,password)
-            alert('Usuario registrado')
-        }catch(e){
-            console.log(e)
-        }
+        
+        auth.createUserWithEmailAndPassword(email,password)
+        .then(r => alert('Usuario registrado'))
+        .catch(e=>{
+            
+            if(e.code=='auth/invalid-email'){
+                setMesgerror('Formato del Emeail incorrecto')
+            }
+            if(e.code=='auth/weak-password'){
+                setMesgerror('Contraseña debe de tener 6 caracteres o mas')
+            }
+            if(e.code=='auth/email-already-in-use'){
+                setMesgerror('Email ya registrado')
+            }
+        })
     }
     return (
         <div className='row mt-5'>
@@ -23,7 +33,7 @@ const Login = () =>{
                     onChange={(e)=>{setEmail(e.target.value)}}
                     className='form-control'
                     placeholder='Introduce el Email'
-                    type='text'
+                    type='email'
                     />
                      <input
                     onChange={(e)=>{setPassword(e.target.value)}}
@@ -36,6 +46,18 @@ const Login = () =>{
                     value='Registrar Usuario'
                     type="submit"/>
                 </form>
+                {
+                    msgerror !=null ? 
+                    (
+                        <div>
+                        {msgerror}
+                        </div>
+                    )
+                    :
+                    (
+                        <span></span>
+                   )
+                }
             </div>
             <div className="col"></div>
 
