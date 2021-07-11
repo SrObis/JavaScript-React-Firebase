@@ -22,6 +22,19 @@ const Login = () =>{
             if(e.code=='auth/email-already-in-use'){
                 setMesgerror('Email ya registrado')
             }
+            
+        })
+    }
+    const LoginUsuario = ()=>{
+        auth.signInWithEmailAndPassword(email,password)
+        .then( (r) => console.log(r))
+        .catch((err)=>{
+            if(err.code=='auth/weak-password'){
+                setMesgerror('Contraseña debe de tener 6 caracteres o mas')
+            }
+            if(err.code=='auth/wrong-password'){
+                setMesgerror('Contraseña no es correcta')
+            }
         })
     }
     return (
@@ -46,6 +59,13 @@ const Login = () =>{
                     value='Registrar Usuario'
                     type="submit"/>
                 </form>
+               <button
+               onClick={LoginUsuario}
+                className='btn btn-success btn-block'
+               >
+                   Iniciar Sesion
+               </button>
+
                 {
                     msgerror !=null ? 
                     (
