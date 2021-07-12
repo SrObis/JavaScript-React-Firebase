@@ -1,8 +1,9 @@
 import React, {useState}from 'react'
 import { auth } from '../firebaseconfig'
-
+import { useHistory } from 'react-router'
 
 const Login = () =>{
+    const historial = useHistory()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [msgerror, setMesgerror] = useState(null)
@@ -10,7 +11,9 @@ const Login = () =>{
         e.preventDefault()//para que no se recarge el formulario
         
         auth.createUserWithEmailAndPassword(email,password)
-        .then(r => alert('Usuario registrado'))
+        .then(r => {
+            historial.push('/')
+        })
         .catch(e=>{
             
             if(e.code=='auth/invalid-email'){
@@ -27,7 +30,9 @@ const Login = () =>{
     }
     const LoginUsuario = ()=>{
         auth.signInWithEmailAndPassword(email,password)
-        .then( (r) => console.log(r))
+        .then( (r) =>{ 
+            historial.push('/')
+        })
         .catch((err)=>{
             if(err.code=='auth/weak-password'){
                 setMesgerror('Contraseña debe de tener 6 caracteres o mas')
