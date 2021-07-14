@@ -35,6 +35,18 @@ function App() {
       }
       
   }
+  const BorrarUsuario = async (id)=>{
+    try{
+      await store.collection('agenda').doc(id).delete()
+      const { docs } = await store.collection('agenda').get()
+      const nuevoArray = docs.map(item => ({ id: item.id, ...item.data()}))
+      setUsuariosAgenda(nuevoArray)
+    }
+    catch(e){
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
     const getUsuarios = async() => {
       const { docs } = await store.collection('agenda').get()
@@ -81,13 +93,22 @@ function App() {
         <div className="col">
           <h2 className="d-flex justify-content-center">Lista Contactos</h2>
           
-            <ul>
+            <ul className="list-group"> 
             {
               usuariosagenda.length !== 0 ?
               (
                 usuariosagenda.map( item=> (
-              <li key={item.id}>{item.nombre}--{item.telefono}</li>
-                ))
+                <li key={item.id}
+                    className="list-group-item">
+                    {item.nombre}--{item.telefono}
+                    <button 
+                      className="btn btn-danger float-right"
+                      onClick={(id) => {BorrarUsuario(item.id)}}
+                    >
+                      ELIMINAR
+                    </button>
+                </li>
+              ))
               )
               :
               (
