@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {store} from './Firebaseconf'
 
 function App() {
+  const [modoedicion, setModoEdicion] = useState (null)
+  const [idusuario, setIdusuario] = useState ('')
   const [nombre, setNombre] = useState ('')
   const [phone, setPhone] = useState ('')
   const [usuariosagenda, setUsuariosAgenda] = useState([])
@@ -13,7 +15,6 @@ function App() {
         nombre:nombre,
         telefono:phone
       }
-      
       if(!nombre.trim()){
         setError('El campo nombre esta vacio')
       } else if(!phone.trim()){
@@ -46,6 +47,48 @@ function App() {
       console.log(e)
     }
   }
+  const EditarUsuario = async (id) =>{
+    try{
+      const data = await store.collection('agenda').doc(id).get()
+      const { nombre, telefono} = data.data()
+      setIdusuario (id)
+      setNombre  (nombre)
+      setPhone  (telefono)
+      setModoEdicion(true)
+      console.log(data.data())
+    }catch(e){
+      console.log(e)
+
+    }
+    
+  }
+  const setUpdate = async (e) => {
+    e.preventDefault()
+    if(!nombre.trim()){
+      setError('El campo nombre esta vacio')
+    } else if(!phone.trim()){
+      setError('El campo telefono esta vacio')
+    } else{
+      setError('')
+    const userUpdate = {
+    nombre:nombre,
+    telefono:phone
+    }
+    try{
+      await store.collection('agenda').doc(idusuario).set(userUpdate)
+      const { docs } = await store.collection('agenda').get()
+      const nuevoArray = docs.map(item => ({ id: item.id, ...item.data()}))
+      setUsuariosAgenda(nuevoArray)
+    }catch(e){
+      console.log(e)
+    }
+    setNombre('')
+    setPhone('')
+    setIdusuario('')
+    setModoEdicion (null)
+    }
+  }
+
 
   useEffect(() => {
     const getUsuarios = async() => {
@@ -60,7 +103,7 @@ function App() {
       <div className="row">
         <div className="col">
           <h2 className="d-flex justify-content-center">Formulario de Usuarios</h2>
-          <form onSubmit={setUsuarios} className="form-group">
+          <form onSubmit={modoedicion ? setUpdate : setUsuarios } className="form-group">
             <input
             value={nombre}
             onChange={(e) => {setNombre(e.target.value) }}
@@ -75,7 +118,17 @@ function App() {
             placeholder="Introduce un telefono"
             type="tel"
             />
-            <input type="submit" value="Registrar" className="btn btn-dark btn-block mt-3"/>
+            {
+              modoedicion ?
+              (            
+                <input type="submit" value="EDITAR" className="btn btn-info btn-block mt-3"/>
+              )
+              :
+              (
+                <input type="submit" value="REGISTRAR" className="btn btn-dark btn-block mt-3"/>
+              )
+
+            }
           </form>
           {
             error ?
@@ -106,6 +159,12 @@ function App() {
                       onClick={(id) => {BorrarUsuario(item.id)}}
                     >
                       ELIMINAR
+                    </button>
+                    <button 
+                      className="btn btn-info mr-4 float-right"
+                      onClick={(id) => {EditarUsuario(item.id)}}
+                    >
+                      EDITAR
                     </button>
                 </li>
               ))
