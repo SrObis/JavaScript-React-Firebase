@@ -21,9 +21,11 @@ function App() {
       } else{
         setError('')
       try {
-        const data = await 
-        store.collection('agenda').add(usuario)
-      //añadimos un objeto de JavaScriptpara que lo pase a json
+        const data = await store.collection('agenda').add(usuario) //añadimos un objeto de JavaScriptpara que lo pase a json
+        const { docs } = await store.collection('agenda').get()
+        const nuevoArray = docs.map(item => ({ id: item.id, ...item.data()}))
+        setUsuariosAgenda(nuevoArray)
+        alert('Usuario añadido corectamente')
         console.log('Tarea añadida')
       } catch (e) { 
         console.log(e)
