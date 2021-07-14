@@ -4,7 +4,7 @@ import {store} from './Firebaseconf'
 function App() {
   const [nombre, setNombre] = useState ('')
   const [phone, setPhone] = useState ('')
-  const [usuarios, setUsuario] = useState ('')
+  const [usuariosagenda, setUsuariosAgenda] = useState([])
   const [error, setError] = useState ('')
 
   const setUsuarios = async (e) => {
@@ -33,6 +33,14 @@ function App() {
       }
       
   }
+  useEffect(() => {
+    const getUsuarios = async() => {
+      const { docs } = await store.collection('agenda').get()
+      const nuevoArray = docs.map(item => ({ id: item.id, ...item.data()}))
+      setUsuariosAgenda(nuevoArray)
+    }
+    getUsuarios()
+  },[])
   return (
     <div className="container">
       <div className="row">
@@ -70,6 +78,24 @@ function App() {
         </div>
         <div className="col">
           <h2 className="d-flex justify-content-center">Lista Contactos</h2>
+          
+            <ul>
+            {
+              usuariosagenda.length !== 0 ?
+              (
+                usuariosagenda.map( item=> (
+              <li key={item.id}>{item.nombre}--{item.telefono}</li>
+                ))
+              )
+              :
+              (
+                <span>
+                  Lo siento no hay usuarios en la agenda
+                </span>
+              )
+            }
+            </ul>
+            
         </div>
       </div>
     </div>
